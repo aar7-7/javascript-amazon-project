@@ -1,4 +1,6 @@
-export let cart = JSON.parse(localStorage.getItem('cart')) || [];
+import { deliveryOption } from "./deliveryOpttion.js";
+
+export let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // if (!cart) {
 //   cart = [
@@ -17,47 +19,42 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 // Function to add item to cart
 export function addToCart(productId) {
   let matchingItem;
-      cart.forEach((cartItem) => {
-        if (productId === cartItem.productId) {
-          matchingItem = cartItem; 
-        }
-      });
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
 
-      if (matchingItem) {
-        matchingItem.quantity += 1;
-      } else {
-        cart.push({ productId: productId, quantity: 1 });
-      }
+  if (matchingItem) {
+    matchingItem.quantity += 1;
+  } else {
+    cart.push({ productId: productId, quantity: 1, deliveryOption: "1" });
+  }
 
-      // Update localStorage after modifying cart
-      localStorage.setItem("cart", JSON.stringify(cart));
+  // Update localStorage after modifying cart
+  localStorage.setItem("cart", JSON.stringify(cart));
 
-      // Update cart quantity display
-      let cartQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.querySelector(".cart-quantity").innerHTML = cartQuantity;
-    
+  // Update cart quantity display
+  let cartQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.querySelector(".cart-quantity").innerHTML = cartQuantity;
 }
 
 // Function to remove item from cart
 export function removeFromCart(productId) {
-  
-    
-      
-      let index = cart.findIndex((item) => item.productId === productId);
+  let index = cart.findIndex((item) => item.productId === productId);
 
-      if (index !== -1) {
-        cart.splice(index, 1);
+  if (index !== -1) {
+    cart.splice(index, 1);
 
-        // Update localStorage after modifying cart
-        localStorage.setItem("cart", JSON.stringify(cart));
+    // Update localStorage after modifying cart
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-        // Remove item from the DOM
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        if (container) {
-          container.remove();
-        }
-      }
-    
-  
+    // Remove item from the DOM
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+    if (container) {
+      container.remove();
+    }
+  }
 }
-
